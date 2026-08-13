@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>JULIE LIU · cs @ berkeley</title>
+<link rel="icon" type="image/png" href="assets/butterfly-favicon.png" />
+<meta name="description" content="Julie Liu — currently studying computer science, data science, and music, with a passion for marketing and design." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="transition.css" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- black curtain for the swipe-up page transition -->
+  <div class="page-transition" aria-hidden="true"></div>
+
+  <div class="page" id="top">
+
+    <!-- ================= HEADER ================= -->
+    <header class="site-header">
+      <a href="#top" class="logo" data-cursor>welcome!</a>
+      <nav class="nav" id="nav">
+        <div class="nav-links" id="navLinks">
+          <a href="#work" data-cursor>Projects</a>
+          <a href="about.html" data-cursor data-transition>About</a>
+        </div>
+        
+      </nav>
+    </header>
+
+    <!-- ================= HERO ================= -->
+    <section class="hero" id="hero">
+     
+
+      <h1 class="hero-title reveal">
+        <span>JULIE LIU</span>
+        <span>cs @ berkeley</span>
+      </h1>
+
+      <div class="hero-foot">
+        <button class="email-copy" id="emailCopy" data-clip="julieliu1701@berkeley.edu" data-cursor>
+          <span class="email-text">julieliu1701@berkeley.edu</span>
+          <svg class="copy-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span class="copy-tip" id="copyTip">Copy</span>
+        </button>
+
+        <p class="hero-intro">
+          currently studying computer science, data science, and music,
+          with a passion for marketing and design.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= WORK ================= -->
+    <section class="section work" id="work">
+      <div class="work-grid">
+        <a class="tile" href="berkeleytime.html" aria-label="Berkeleytime" data-cursor data-transition>
+          <div class="tile-img"><img src="assets/berkeleytime.png" alt="Berkeleytime" /></div>
+          <span class="tile-title">Berkeleytime</span>
+        </a>
+        <a class="tile" href="memori.html" aria-label="Memori" data-cursor data-transition>
+          <div class="tile-img"><img src="assets/memori.png" alt="Memori" /></div>
+          <span class="tile-title">Memori</span>
+        </a>
+        
+      </div>
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+    <footer class="footer" id="footerCta">
+      <!-- text sources for the dotted canvas (visually hidden, kept for a11y) -->
+      <div class="contact-copy" aria-hidden="true">
+        <span class="cc-big">let's stay connected!</span>
+        <span class="cc-sub">thanks for exploring with me</span>
+      </div>
+      <!-- clickable link targets; the canvas draws them as dots, JS positions these over them -->
+      <nav class="contact-links" aria-label="Contact links">
+        <a class="clink" href="https://www.linkedin.com/in/julieliu1701/" target="_blank" rel="noopener noreferrer">Linkedin</a>
+        <a class="clink clink-email" href="#" role="button" data-clip="julieliu1701@berkeley.edu">
+          <span class="clink-label">Email</span>
+          <span class="copy-tip">Copy</span>
+        </a>
+        <a class="clink" href="assets/Julie Liu Resume 7-17-2026.pdf" target="_blank" rel="noopener noreferrer" data-resume>Resume</a>
+      </nav>
+    </footer>
+
+  </div>
+
+  <script src="transition.js"></script>
+  <script src="script.js"></script>
+  <script src="dots.js"></script>
+  <script src="contact.js"></script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+/* =========================================================
+   ABOUT PAGE
+   ========================================================= */
+
+:root{
+  --page: #ffffff;
+  --ink:  #0c0c0d;
+  --ink-soft: #8b8b8f;
+  --line: #ececec;
+  --dark: #0a0a0a;
+  --dark-soft: #6c6c72;
+  --pad: clamp(24px, 5vw, 72px);
+  --maxw: 1240px;
+  --ease: cubic-bezier(.6,.01,.05,.95);
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('neue-montreal/NeueMontreal-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('neue-montreal/NeueMontreal-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('neue-montreal/NeueMontreal-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Wireframe';
+  src: url('wireframe/WIREFRAM.woff2') format('woff2'),
+       url('wireframe/WIREFRAM.TTF') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+body{
+  font-family:'Neue Montreal', sans-serif;
+  background:var(--page);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  line-height:1.45;
+  overflow-x:hidden;
+}
+
+img{ display:block; max-width:100%; }
+a{ color:inherit; text-decoration:none; }
+
+/* invert cursor */
+@media (hover:hover) and (pointer:fine){
+  *{ cursor:none !important; }
+}
+#dots-invert{
+  position:fixed; inset:0;
+  width:100%; height:100%;
+  pointer-events:none; display:block;
+  z-index:9998; mix-blend-mode:difference;
+}
+
+.page{ width:100%; background:var(--page); position:relative; z-index:2; }
+
+.wrap{
+  max-width:var(--maxw);
+  margin:0 auto;
+  padding:28px var(--pad) 100px;
+}
+
+/* ================= BACK (nav-style, top left) ================= */
+.back-btn{
+  display:inline-flex; align-items:center;
+  margin-bottom:28px;
+  padding:0;
+  font-family:'Inter', 'Neue Montreal', system-ui, sans-serif;
+  font-size:15px; font-weight:500;
+  color:var(--ink-soft);
+  background:none; border:none;
+  transition:color .25s;
+}
+.back-btn:hover{ color:var(--ink); }
+
+/* ================= INTRO (portrait + bio) ================= */
+.about-top{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) minmax(0, 1.15fr);
+  gap:clamp(32px, 5vw, 72px);
+  align-items:start;
+}
+
+/* layered portrait stack */
+.portrait{
+  position:relative;
+  width:min(100%, 420px);
+  aspect-ratio:666 / 999;
+  margin-inline:auto;
+  overflow:hidden;
+}
+.portrait-base,
+.portrait-cutout{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  object-position:center top;
+}
+.portrait-base{ z-index:1; }
+.portrait-cutout{ z-index:4; pointer-events:none; }
+
+.portrait-ring{
+  position:absolute;
+  left:47%;
+  /* ADJUST RING HEIGHT HERE ↓  lower % = higher on the photo (head ≈ 22–32%) */
+  top:32%;
+  width:118%;
+  aspect-ratio:1;
+  transform:translate(-50%, -50%);
+  object-fit:contain;
+  pointer-events:none;
+  z-index:2;
+}
+.portrait-ring.ring-majors{
+  width:92%;
+  z-index:3;
+}
+
+.ring-intro{
+  animation:spin-ccw 48s linear infinite;
+}
+.ring-majors{
+  animation:spin-cw 36s linear infinite;
+}
+
+@keyframes spin-ccw{
+  from{ transform:translate(-50%, -50%) rotate(0deg); }
+  to{   transform:translate(-50%, -50%) rotate(-360deg); }
+}
+@keyframes spin-cw{
+  from{ transform:translate(-50%, -50%) rotate(0deg); }
+  to{   transform:translate(-50%, -50%) rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .ring-intro, .ring-majors{ animation:none; }
+}
+
+/* bio column */
+.about-bio{ padding-top:clamp(8px, 2vw, 28px); }
+
+.about-title{
+  font-family:'Wireframe', sans-serif;
+  font-weight:400;
+  font-size:clamp(56px, 9vw, 120px);
+  line-height:.9;
+  letter-spacing:.02em;
+  margin-bottom:clamp(20px, 3vw, 36px);
+}
+
+.about-copy{
+  font-family:'Neue Montreal', sans-serif;
+  font-size:clamp(15px, 1.35vw, 18px);
+  font-weight:400;
+  line-height:1.55;
+  color:var(--ink);
+  max-width:38em;
+}
+
+/* ================= EXPERIENCE BLOCKS ================= */
+.xp{
+  display:grid;
+  grid-template-columns:minmax(140px, 220px) 1fr;
+  gap:clamp(20px, 4vw, 48px);
+  padding-top:clamp(64px, 10vw, 110px);
+  padding-left:clamp(32px, 1vw, 55px)
+  /*align-items:start;*/
+}
+
+.xp-label{
+  font-family:'Neue Montreal', sans-serif;
+  font-size:clamp(14px, 1.2vw, 16px);
+  font-weight:400;
+  color:var(--ink);
+  padding-top:.55em;
+}
+
+.xp-list{ display:flex; flex-direction:column; gap:clamp(22px, 3vw, 36px); }
+
+.xp-row{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);
+  gap:24px;
+  align-items:start;
+}
+
+.xp-name{
+  font-family:'Wireframe', sans-serif;
+  font-weight:400;
+  font-size:clamp(28px, 4.2vw, 52px);
+  line-height:1;
+  letter-spacing:.02em;
+  text-align:right;
+}
+
+.xp-meta{
+  font-family:'Neue Montreal', sans-serif;
+  font-size:clamp(13px, 1.15vw, 16px);
+  font-weight:400;
+  color:var(--ink);
+  text-align:left;
+  line-height:1.35;
+}
+.xp-meta .xp-role,
+.xp-meta .xp-time{ display:block; }
+
+/* ================= FOOTER (same as home) ================= */
+.footer{
+  background:var(--dark); color:#fff;
+  min-height:70vh;
+  position:relative; overflow:hidden;
+}
+.footer::before{
+  content:''; position:absolute; left:0; right:0; top:0; height:240px;
+  background:linear-gradient(to bottom, var(--page) 0%, var(--dark) 100%);
+  z-index:0; pointer-events:none;
+}
+.contact-canvas{
+  position:absolute; inset:0; width:100%; height:100%;
+  z-index:2; pointer-events:none; display:block;
+}
+.contact-copy{
+  position:absolute; width:1px; height:1px; overflow:hidden;
+  clip:rect(0 0 0 0); white-space:nowrap;
+}
+.contact-links{ position:absolute; inset:0; z-index:3; }
+.contact-links .clink{
+  position:absolute; display:block;
+  color:transparent; font-size:1px; line-height:1;
+  text-decoration:none; background:transparent;
+}
+.contact-links .clink-email{ overflow:visible; }
+.contact-links .clink-email .clink-label{
+  position:absolute; inset:0; overflow:hidden;
+  color:transparent; font-size:0; line-height:0;
+}
+.contact-links .clink-email .copy-tip{
+  position:absolute; left:50%; top:-38px;
+  transform:translate(-50%, 6px);
+  background:#fff; color:var(--dark); font-size:12px; font-weight:500;
+  font-family:'Neue Montreal', sans-serif; line-height:1.2;
+  padding:6px 12px; border-radius:20px; white-space:nowrap;
+  opacity:0; pointer-events:none; z-index:4;
+  transition:opacity .25s, transform .25s var(--ease);
+}
+.contact-links .clink-email:hover .copy-tip,
+.contact-links .clink-email.copied .copy-tip{
+  opacity:1; transform:translate(-50%, 0);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width:860px){
+  .about-top{
+    grid-template-columns:1fr;
+    gap:36px;
+  }
+  .portrait{ width:min(100%, 360px); }
+  .xp{
+    grid-template-columns:1fr;
+    gap:14px;
+    padding-top:56px;
+  }
+  .xp-row{
+    grid-template-columns:1fr;
+    gap:6px;
+  }
+  .xp-name{ text-align:left; }
+  .xp-meta{ text-align:left; }
+}

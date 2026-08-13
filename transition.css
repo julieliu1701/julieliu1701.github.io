@@ -1,0 +1,20 @@
+/* =========================================================
+   PAGE TRANSITION — black gradient curtain that swipes up
+   Shared by the home page and every project page.
+   Enter: a CSS animation runs on load — the curtain starts
+          covering the screen and slides up off the top.
+          (Pure CSS so the page is never stuck behind it.)
+   Leave: JS raises the curtain up from the bottom to cover,
+          then the browser navigates to the next page.
+   ========================================================= */
+.page-transition{
+  position:fixed; inset:0; z-index:10000; pointer-events:none;
+  background:linear-gradient(180deg,#141414 0%, #000 100%);
+  transform:translateY(-100%);             /* resting state: hidden above the screen */
+  animation:curtain-reveal .75s cubic-bezier(.76,0,.24,1) backwards;
+  will-change:transform;
+}
+@keyframes curtain-reveal{
+  from{ transform:translateY(0); }         /* covers the screen ... */
+  to{   transform:translateY(-100%); }     /* ... then swipes up and away */
+}
