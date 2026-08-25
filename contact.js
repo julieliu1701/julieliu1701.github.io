@@ -69,10 +69,10 @@
     W = footer.clientWidth; H = footer.clientHeight;
     canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
 
-    const bigPx = Math.max(40, Math.min(100, W * 0.050));
-    const subPx = Math.max(20, Math.min(30, W * 0.025));
-    // Footer links match nav: 15px size, 26px gap
-    const linkPx = 18;
+    const bigPx = Math.max(34, Math.min(84, W * 0.042));
+    const subPx = Math.max(17, Math.min(25, W * 0.021));
+    // Footer links match nav: 15px size, 20px gap
+    const linkPx = 15;
     // fine sampling + overlapping round dots → the copy reads as smooth Inter type,
     // but every dot is still a particle that can scatter on hover
     const gBig = Math.max(2, Math.round(bigPx / 34));

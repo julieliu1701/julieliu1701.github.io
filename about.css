@@ -77,10 +77,6 @@ body{
 img{ display:block; max-width:100%; }
 a{ color:inherit; text-decoration:none; }
 
-/* invert cursor */
-@media (hover:hover) and (pointer:fine){
-  *{ cursor:none !important; }
-}
 #dots-invert{
   position:fixed; inset:0;
   width:100%; height:100%;
