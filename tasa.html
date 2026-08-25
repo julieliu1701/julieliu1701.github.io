@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TASA · Julie Liu</title>
+<link rel="icon" type="image/png" href="assets/butterfly-favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="transition.css" />
+<link rel="stylesheet" href="project.css" />
+</head>
+<body>
+  <!-- black curtain for the swipe-up page transition -->
+  <div class="page-transition" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <a class="back-btn" href="index.html" data-transition>Back</a>
+
+    <!-- ================= HERO ================= -->
+    <section class="phero">
+      <img class="phero-img" src="assets/tasa 1.png" alt="TASA" />
+      <img class="phero-img-alt" src="assets/tasa 2.png" alt="" aria-hidden="true" />
+      <h1 class="phero-title">TASA</h1>
+      <p class="phero-sub">Taiwanese American Student Association at UC Berkeley</p>
+    </section>
+
+    <!-- ================= META ================= -->
+    <section class="meta">
+      <div class="meta-col">
+        <div class="meta-label">Role</div>
+        <div class="meta-value">Family Head</div>
+      </div>
+      <div class="meta-col center">
+        <div class="meta-label">Platforms</div>
+        <div class="meta-icons">
+          <a href="https://www.instagram.com/meowlatang_fam" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        </div>
+      </div>
+      <div class="meta-col right">
+        <div class="meta-label">Since</div>
+        <div class="meta-value">Spring 2026</div>
+      </div>
+    </section>
+
+    <!-- ================= What is TASA? ================= -->
+    <section class="row">
+      <div class="row-label">What is TASA?</div>
+      <div>
+        <h2 class="row-head">A loving community brought together by shared cultural experiences.</h2>
+        <p class="row-body">As a TASA Fam Head, we host events to curate a space where members can feel connected and have fun. We prioritize giving our members a place outside of class and other commitments to come together and take a break from everyone's busy schedules. With monthly events and gatherings, we hope to foster a home away from home for students to find their forever friends.</p>
+      </div>
+    </section>
+
+    <!-- ================= MEOWLATANG SP'26 ================= -->
+    <!-- Gallery uses the same layout as "The Work" on other project pages.
+         Reorder: move entire [##] blocks inside .work-row -->
+    <section class="row the-work" aria-labelledby="meowlatang-title">
+      <div class="row-label" id="meowlatang-title">Meowlatang Fam SP26</div>
+      <div class="work-content">
+        <div class="work-row" data-carousel>
+
+          <!-- [01] single — meowlatang logo -->
+          <figure class="work-media work-tip" data-tip="">
+            <img src="assets/tasa work/meowlatang/meowlatang.png" alt="Meowlatang family logo" />
+          </figure>
+
+          <!-- [12] video — copy -->
+          <figure class="work-media work-video work-tip" data-tip="">
+            <video src="assets/tasa work/meowlatang/copy_FE1364F0-02B8-4690-90C5-2864ED417536.mov" muted playsinline preload="metadata"></video>
+            <div class="vid-bar">
+              <button type="button" class="vid-play" aria-label="Play">
+                <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
+              </button>
+              <button type="button" class="vid-mute" aria-label="Unmute">
+                <svg class="icon-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
+                <svg class="icon-unmute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+              </button>
+            </div>
+          </figure>
+
+          <!-- [10] video — Call Me Maybe -->
+          <figure class="work-media work-video work-tip" data-tip="">
+            <video src="assets/tasa work/meowlatang/Call Me Maybe ft. TASA SP26 Interns.mp4" muted playsinline preload="metadata"></video>
+            <div class="vid-bar">
+              <button type="button" class="vid-play" aria-label="Play">
+                <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
+              </button>
+              <button type="button" class="vid-mute" aria-label="Unmute">
+                <svg class="icon-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
+                <svg class="icon-unmute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+              </button>
+            </div>
+          </figure>
+
+          <!-- [02] hover-swap — 2010 (2 images) -->
+          <figure class="work-media work-swap work-tip" data-tip="">
+            <img src="assets/tasa work/meowlatang/2010 1.png" alt="2010 event" />
+            <img class="swap-alt" src="assets/tasa work/meowlatang/2010 2.png" alt="" aria-hidden="true" />
+          </figure>
+
+          <!-- [03] hover-swap — meow 2010 (2 images) -->
+          <figure class="work-media work-swap work-tip" data-tip="">
+            <img src="assets/tasa work/meowlatang/meow 2010 1.JPG" alt="Meow 2010 event" />
+            <img class="swap-alt" src="assets/tasa work/meowlatang/meow 2010 2.JPG" alt="" aria-hidden="true" />
+          </figure>
+
+          <!-- [11] video — ba72 -->
+          <figure class="work-media work-video work-tip" data-tip="">
+            <video src="assets/tasa work/meowlatang/ba72c23a68f140dd886fc3bc4fc20239.mov" muted playsinline preload="metadata"></video>
+            <div class="vid-bar">
+              <button type="button" class="vid-play" aria-label="Play">
+                <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
+              </button>
+              <button type="button" class="vid-mute" aria-label="Unmute">
+                <svg class="icon-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
+                <svg class="icon-unmute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+              </button>
+            </div>
+          </figure>
+
+          <!-- [04] click-stack — Matcha pop up (3 slides; click to advance) -->
+          <figure class="work-media work-stack work-tip" data-tip="">
+            <img class="stack-frame" src="assets/tasa work/meowlatang/Matcha pop up - 1.png" alt="Matcha pop up" />
+            <img class="stack-src" src="assets/tasa work/meowlatang/Matcha pop up - 2.png" alt="" aria-hidden="true" />
+            <img class="stack-src" src="assets/tasa work/meowlatang/Matcha pop up - 3.png" alt="" aria-hidden="true" />
+            <span class="stack-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+            </span>
+          </figure>
+
+          <!-- [05] single — crafts and crushes -->
+          <figure class="work-media work-tip" data-tip="">
+            <img src="assets/tasa work/meowlatang/crafts and crushes.png" alt="Crafts and crushes event" />
+          </figure>
+
+          <!-- [08] single — group photo -->
+          <figure class="work-media work-tip" data-tip="">
+            <img src="assets/tasa work/meowlatang/IMG_9892_Original.JPG" alt="Meowlatang group photo" />
+          </figure>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MEOWLATANG SP'26 ================= -->
+    <!-- Gallery uses the same layout as "The Work" on other project pages.
+         Reorder: move entire [##] blocks inside .work-row -->
+    <section class="row the-work" aria-labelledby="meowlatang-title">
+      <div class="row-label" id="meowlatang-title">Wa Ai Li Fam FA26</div>
+      <div class="work-content">
+        <div class="work-row" data-carousel>
+
+          <!-- [12] video — copy -->
+          <figure class="work-media work-video work-tip" data-tip="">
+            <video src="assets/tasa work/wa ai li/wa ai li fam video.mp4" muted playsinline preload="metadata"></video>
+            <div class="vid-bar">
+              <button type="button" class="vid-play" aria-label="Play">
+                <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
+              </button>
+              <button type="button" class="vid-mute" aria-label="Unmute">
+                <svg class="icon-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
+                <svg class="icon-unmute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+              </button>
+            </div>
+          </figure>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="transition.js"></script>
+  <script src="invert-cursor.js"></script>
+  <script src="work.js"></script>
+</body>
+</html>

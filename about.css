@@ -12,6 +12,11 @@
   --pad: clamp(24px, 5vw, 72px);
   --maxw: 1240px;
   --ease: cubic-bezier(.6,.01,.05,.95);
+  /* shared two-column split (headshot | bio) */
+  --about-gap: clamp(32px, 5vw, 72px);
+  --about-left-fr: 1;
+  --about-right-fr: 1.15;
+  --about-rule: #c8c8c8;
 }
 
 *{ box-sizing:border-box; margin:0; padding:0; }
@@ -36,6 +41,16 @@
   font-family: 'Neue Montreal';
   src: url('neue-montreal/NeueMontreal-Bold.woff2') format('woff2');
   font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Argent CF';
+  src: url('argent-cf/ArgentCF.woff2') format('woff2'),
+       url('argent-cf/ArgentCF.woff') format('woff'),
+       url('argent-cf/ArgentCF.ttf') format('truetype');
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
@@ -98,8 +113,8 @@ a{ color:inherit; text-decoration:none; }
 .about-top{
   display:grid;
   grid-template-columns:minmax(0, 1fr) minmax(0, 1.15fr);
-  gap:clamp(32px, 5vw, 72px);
-  align-items:start;
+  gap:var(--about-gap);
+  align-items:end;
 }
 
 /* layered portrait stack */
@@ -157,13 +172,27 @@ a{ color:inherit; text-decoration:none; }
   .ring-intro, .ring-majors{ animation:none; }
 }
 
-/* bio column */
-.about-bio{ padding-top:clamp(8px, 2vw, 28px); }
+/* bio column — sits at bottom of headshot via align-items:end */
+.about-bio{
+  position:relative;
+  padding-top:0;
+}
+/* gray rule in the gutter: top of ABOUT → bottom of bio */
+.about-bio::before{
+  content:'';
+  position:absolute;
+  top:0; bottom:0;
+  left:calc(var(--about-gap) / -2);
+  width:1px;
+  background:var(--about-rule);
+  transform:translateX(-50%);
+  pointer-events:none;
+}
 
 .about-title{
-  font-family:'Wireframe', sans-serif;
-  font-weight:400;
-  font-size:clamp(56px, 9vw, 120px);
+  font-family:'Inter', 'Neue Montreal', system-ui, sans-serif;
+  font-weight:700;
+  font-size:clamp(42px, 6.5vw, 88px);
   line-height:.9;
   letter-spacing:.02em;
   margin-bottom:clamp(20px, 3vw, 36px);
@@ -179,36 +208,71 @@ a{ color:inherit; text-decoration:none; }
 }
 
 /* ================= EXPERIENCE BLOCKS ================= */
+/* Each row mirrors .about-top: company under headshot (right-aligned
+   to headshot edge), role/date under bio (left-aligned with paragraph) */
 .xp{
-  display:grid;
-  grid-template-columns:minmax(140px, 220px) 1fr;
-  gap:clamp(20px, 4vw, 48px);
   padding-top:clamp(64px, 10vw, 110px);
-  padding-left:clamp(32px, 1vw, 55px)
-  /*align-items:start;*/
 }
+.xp + .xp{ padding-top:clamp(36px, 5vw, 56px); }
 
-.xp-label{
+/* sits above .xp-list — outside the gray rule */
+.xp-section-label{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) minmax(0, 1.15fr);
+  gap:var(--about-gap);
+  margin-bottom:clamp(6px, 1vw, 10px);
+}
+.xp-section-label span{
+  width:min(100%, 420px);
+  margin-inline:auto;
+  display:block;
   font-family:'Neue Montreal', sans-serif;
   font-size:clamp(14px, 1.2vw, 16px);
   font-weight:400;
   color:var(--ink);
-  padding-top:.55em;
+  line-height:1.2;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  text-align:right;
 }
 
-.xp-list{ display:flex; flex-direction:column; gap:clamp(22px, 3vw, 36px); }
+.xp-list{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  gap:clamp(22px, 3vw, 36px);
+}
+/* gray rule in the gutter: first company → last company */
+.xp-list::before{
+  content:'';
+  position:absolute;
+  top:0; bottom:0;
+  left:calc(
+    (100% - var(--about-gap))
+      * var(--about-left-fr)
+      / (var(--about-left-fr) + var(--about-right-fr))
+    + var(--about-gap) / 2
+  );
+  width:1px;
+  background:var(--about-rule);
+  transform:translateX(-50%);
+  pointer-events:none;
+}
 
 .xp-row{
   display:grid;
-  grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);
-  gap:24px;
+  grid-template-columns:minmax(0, 1fr) minmax(0, 1.15fr);
+  gap:var(--about-gap);
   align-items:start;
 }
 
 .xp-name{
-  font-family:'Wireframe', sans-serif;
+  /* Match portrait box — right edge aligns with headshot */
+  width:min(100%, 420px);
+  margin-inline:auto;
+  font-family:'Inter', 'Neue Montreal', system-ui, sans-serif;
   font-weight:400;
-  font-size:clamp(28px, 4.2vw, 52px);
+  font-size:clamp(22px, 3.2vw, 38px);
   line-height:1;
   letter-spacing:.02em;
   text-align:right;
@@ -239,6 +303,11 @@ a{ color:inherit; text-decoration:none; }
 .contact-canvas{
   position:absolute; inset:0; width:100%; height:100%;
   z-index:2; pointer-events:none; display:block;
+}
+.footer-motif-canvas{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  z-index:1; pointer-events:none; display:block;
 }
 .contact-copy{
   position:absolute; width:1px; height:1px; overflow:hidden;
@@ -275,16 +344,30 @@ a{ color:inherit; text-decoration:none; }
     grid-template-columns:1fr;
     gap:36px;
   }
+  .about-bio::before,
+  .xp-list::before{ display:none; }
   .portrait{ width:min(100%, 360px); }
   .xp{
-    grid-template-columns:1fr;
-    gap:14px;
     padding-top:56px;
   }
+  .xp + .xp{ padding-top:32px; }
   .xp-row{
     grid-template-columns:1fr;
     gap:6px;
   }
-  .xp-name{ text-align:left; }
+  .xp-section-label{
+    grid-template-columns:1fr;
+    margin-bottom:6px;
+  }
+  .xp-section-label span{
+    width:100%;
+    margin-inline:0;
+    text-align:left;
+  }
+  .xp-name{
+    width:100%;
+    margin-inline:0;
+    text-align:left;
+  }
   .xp-meta{ text-align:left; }
 }

@@ -60,6 +60,65 @@
     el.addEventListener('mouseleave', hideTip);
   });
 
+  /* ---------- video lightbox (click thumbnail to expand) ---------- */
+  const lightbox = document.createElement('div');
+  lightbox.className = 'video-lightbox';
+  lightbox.setAttribute('role', 'dialog');
+  lightbox.setAttribute('aria-modal', 'true');
+  lightbox.setAttribute('aria-label', 'Video player');
+  lightbox.innerHTML =
+    '<div class="video-lightbox__panel">' +
+      '<button type="button" class="video-lightbox__close" aria-label="Close">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">' +
+          '<path d="M6 6l12 12M18 6L6 18"/>' +
+        '</svg>' +
+      '</button>' +
+      '<video class="video-lightbox__video" controls playsinline></video>' +
+    '</div>';
+  document.body.appendChild(lightbox);
+
+  const lbVideo = lightbox.querySelector('.video-lightbox__video');
+  const lbClose = lightbox.querySelector('.video-lightbox__close');
+  let lbOpen = false;
+
+  function openLightbox(wrap, video) {
+    lbOpen = true;
+    lbVideo.src = video.currentSrc || video.getAttribute('src') || '';
+    lbVideo.currentTime = video.currentTime || 0;
+    lbVideo.muted = false;
+    lightbox.classList.add('show');
+    document.body.classList.add('video-lightbox-open');
+    document.body.style.overflow = 'hidden';
+    video.pause();
+    wrap.classList.remove('is-playing');
+    lbVideo.play().catch(function () {});
+    lbClose.focus();
+  }
+
+  function closeLightbox() {
+    if (!lbOpen) return;
+    lbOpen = false;
+    lightbox.classList.remove('show');
+    document.body.classList.remove('video-lightbox-open');
+    document.body.style.overflow = '';
+    lbVideo.pause();
+    lbVideo.removeAttribute('src');
+    lbVideo.load();
+  }
+
+  lbClose.addEventListener('click', function (e) {
+    e.preventDefault();
+    closeLightbox();
+  });
+
+  lightbox.addEventListener('click', function (e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && lbOpen) closeLightbox();
+  });
+
   /* ---------- video play / mute ---------- */
   document.querySelectorAll('.work-video').forEach(function (wrap) {
     const video = wrap.querySelector('video');
@@ -78,6 +137,17 @@
       btnMute.setAttribute('aria-label', video.muted ? 'Unmute' : 'Mute');
     }
     sync();
+
+    wrap.addEventListener('pointerdown', function (e) {
+      if (e.target.closest('.vid-bar')) return;
+      e.stopPropagation();
+    });
+
+    wrap.addEventListener('click', function (e) {
+      if (e.target.closest('.vid-bar')) return;
+      e.preventDefault();
+      openLightbox(wrap, video);
+    });
 
     btnPlay.addEventListener('click', function (e) {
       e.preventDefault();
@@ -98,9 +168,30 @@
     video.addEventListener('pause', sync);
   });
 
+  /* ---------- click-stack (3+ slides, arrow on hover) ---------- */
+  document.querySelectorAll('.work-stack').forEach(function (fig) {
+    const frame = fig.querySelector('.stack-frame');
+    if (!frame) return;
+    const extra = Array.prototype.slice.call(fig.querySelectorAll('.stack-src'))
+      .map(function (el) { return el.getAttribute('src'); });
+    const srcs = [frame.getAttribute('src')].concat(extra);
+    let idx = 0;
+
+    fig.addEventListener('pointerdown', function (e) {
+      e.stopPropagation();
+    });
+
+    fig.addEventListener('click', function (e) {
+      if (e.target.closest('.vid-bar')) return;
+      idx = (idx + 1) % srcs.length;
+      frame.src = srcs[idx];
+    });
+  });
+
   /* ---------- carousel: hover auto-scroll + free manual scroll ---------- */
   document.querySelectorAll('[data-carousel]').forEach(function (root) {
-    const viewport = root.querySelector('.carousel-viewport');
+    const viewport = root.querySelector('.carousel-viewport')
+      || (root.classList.contains('work-row') ? root : null);
     if (!viewport) return;
 
     let hovering = false;
@@ -158,8 +249,22 @@
       viewport.scrollLeft = Math.max(0, Math.min(max, viewport.scrollLeft + dx));
     }, { passive: false });
 
+    root.querySelectorAll('.work-stack').forEach(function (stack) {
+      stack.addEventListener('mouseenter', function () {
+        userOverride = true;
+        stopAuto();
+      });
+      stack.addEventListener('mouseleave', function () {
+        if (hovering && !dragging) {
+          userOverride = false;
+          startAuto();
+        }
+      });
+    });
+
     viewport.addEventListener('pointerdown', function (e) {
       if (e.button != null && e.button !== 0) return;
+      if (e.target.closest('.work-stack, .work-video, .vid-bar')) return;
       dragging = true;
       userOverride = true;
       stopAuto();

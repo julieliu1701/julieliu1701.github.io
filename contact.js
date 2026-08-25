@@ -84,7 +84,7 @@
 
     /* -------- LEFT copy (particles that read as smooth type) -------- */
     const big = sampleText(bigText, bigPx, '600', gBig);
-    const sub = sampleText(subText, subPx, '500', gSub, 2);
+    const sub = sampleText(subText, subPx, '300', gSub, 2);
     const gap = subPx * 0.5;
     const bigY = cy - (big.h + gap + sub.h) / 2;
     const subY = bigY + big.h + gap;

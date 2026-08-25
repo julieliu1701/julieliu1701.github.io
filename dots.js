@@ -13,9 +13,6 @@
 (function () {
   'use strict';
 
-  const fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
-  if (!fine) return;                       // pointer-driven; skip on touch
-
   /* ---------------------------------------------------------
      1. MOTIFS — Braille dot-art (each cell = 2x4 dot grid)
      --------------------------------------------------------- */
@@ -261,6 +258,170 @@ swirl: `
   }
   const PRIMARY = Object.keys(MOTIFS).map((k) => parseMotif(MOTIFS[k]))
     .filter((m) => m.dots.length > 20);
+
+  const MOTIF_BY_NAME = {};
+  Object.keys(MOTIFS).forEach(function (k) {
+    MOTIF_BY_NAME[k] = parseMotif(MOTIFS[k]);
+  });
+
+  // Exact Braille motifs only — no densify / subsample / inventing dots
+  const BURST_NAMES = Object.keys(MOTIF_BY_NAME).filter(function (k) {
+    return MOTIF_BY_NAME[k].dots.length > 20;
+  });
+
+  const DPR_FX = Math.min(window.devicePixelRatio || 1, 2);
+
+  /* =========================================================
+     FOOTER — click empty space to bloom an exact motif
+     (includes butterfly; same bloom as the others)
+     ========================================================= */
+  (function runFooterMotifs() {
+    const footer = document.getElementById('footerCta');
+    if (!footer || !BURST_NAMES.length) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.className = 'footer-motif-canvas';
+    canvas.setAttribute('aria-hidden', 'true');
+    footer.insertBefore(canvas, footer.firstChild);
+    const ctx = canvas.getContext('2d');
+
+    let W = 0, H = 0;
+    const bursts = [];
+    const IN_MS = 480;   // generate time = each dot's base lifespan
+    const SOFT = 55;     // softer edges so the bloom reads organic, not a hard ring
+    let raf = null;
+    let lastMotif = null;
+
+    function layout() {
+      const r = footer.getBoundingClientRect();
+      W = r.width;
+      H = r.height;
+      canvas.width = Math.round(W * DPR_FX);
+      canvas.height = Math.round(H * DPR_FX);
+    }
+
+    function prepMotif(name, cx, cy) {
+      const m = MOTIF_BY_NAME[name];
+      const targetH = Math.min(H * 0.55, W * 0.42, 260);
+      const s = targetH / m.h;
+      const mcx = m.w / 2, mcy = m.h / 2;
+      const dots = [];
+      let maxR = 0;
+      // every Braille dot, exact positions — uniform scale only, no tilt
+      for (let i = 0; i < m.dots.length; i++) {
+        const x = (m.dots[i][0] - mcx) * s;
+        const y = (m.dots[i][1] - mcy) * s;
+        const dist = Math.hypot(x, y);
+        if (dist > maxR) maxR = dist;
+        dots.push({ x: x, y: y, dist: dist, ang: Math.atan2(y, x) });
+      }
+      maxR = Math.max(maxR, 40);
+
+      // organic bloom: distance-based timing + angular wobble + per-dot jitter
+      // (not a perfect circle)
+      let maxAppear = 0;
+      let maxLife = 0;
+      for (let i = 0; i < dots.length; i++) {
+        const d = dots[i];
+        const norm = d.dist / maxR;
+        // slight elliptical / petal bias so the front isn't a clean ring
+        const lobe = 0.12 * Math.sin(d.ang * 3 + Math.random() * 0.8);
+        const jitter = (Math.random() - 0.5) * 0.28;
+        const order = Math.max(0, Math.min(1.15, norm + lobe + jitter));
+        d.appearAt = order * IN_MS;
+        // lifespan ≈ generate time, with a little scatter (never much longer)
+        d.life = IN_MS * (0.82 + Math.random() * 0.18);
+        if (d.appearAt > maxAppear) maxAppear = d.appearAt;
+        if (d.life > maxLife) maxLife = d.life;
+      }
+      return {
+        dots: dots,
+        cx: cx,
+        cy: cy,
+        maxR: maxR,
+        t0: performance.now(),
+        endAt: maxAppear + maxLife + SOFT,
+        r: Math.max(1.0, Math.min(1.7, s * 0.85))
+      };
+    }
+
+    function drawBurst(b, now) {
+      const elapsed = now - b.t0;
+      if (elapsed >= b.endAt) return false;
+
+      ctx.fillStyle = '#ffffff';
+      for (let i = 0; i < b.dots.length; i++) {
+        const d = b.dots[i];
+        const age = elapsed - d.appearAt;
+        if (age < 0 || age > d.life) continue;
+
+        const fadeIn = Math.max(0, Math.min(1, age / SOFT));
+        const fadeOut = Math.max(0, Math.min(1, (d.life - age) / SOFT));
+        const alpha = fadeIn * fadeOut;
+        if (alpha <= 0.02) continue;
+
+        const grow = 0.55 + 0.45 * fadeIn;
+        const rr = b.r * grow;
+        ctx.globalAlpha = alpha;
+        ctx.beginPath();
+        ctx.arc(b.cx + d.x, b.cy + d.y, rr, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      return true;
+    }
+
+    function tick(now) {
+      ctx.setTransform(DPR_FX, 0, 0, DPR_FX, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      let alive = false;
+      for (let i = bursts.length - 1; i >= 0; i--) {
+        if (!drawBurst(bursts[i], now)) bursts.splice(i, 1);
+        else alive = true;
+      }
+      if (alive) raf = requestAnimationFrame(tick);
+      else raf = null;
+    }
+
+    function kick() {
+      if (raf == null) raf = requestAnimationFrame(tick);
+    }
+
+    footer.addEventListener('click', function (e) {
+      if (e.target.closest('a, button, .clink')) return;
+      layout();
+      const rect = footer.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      // keep bloom in the empty black — skip if deep in the top gradient fade
+      if (y < 48) return;
+      let name = BURST_NAMES[(Math.random() * BURST_NAMES.length) | 0];
+      if (BURST_NAMES.length > 1) {
+        let guard = 0;
+        while (name === lastMotif && guard++ < 12) {
+          name = BURST_NAMES[(Math.random() * BURST_NAMES.length) | 0];
+        }
+      }
+      lastMotif = name;
+      bursts.push(prepMotif(name, x, y));
+      // cap concurrent blooms
+      if (bursts.length > 4) bursts.shift();
+      kick();
+    });
+
+    let rt = null;
+    window.addEventListener('resize', function () {
+      clearTimeout(rt);
+      rt = setTimeout(layout, 150);
+    });
+    layout();
+  })();
+
+  /* =========================================================
+     MAIN ENGINE — pointer-driven reveal (home page + fine pointer)
+     ========================================================= */
+  const fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  if (!fine || !document.getElementById('top')) return;
 
   function sample(dots, cap) {
     if (dots.length <= cap) return dots;
