@@ -1,10 +1,12 @@
 /* =========================================================
-   PAGE TRANSITION — controller for the black swipe-up curtain
-   The enter reveal is handled purely in CSS. This script only
-   plays the leave animation (curtain rises up from the bottom
-   to cover the screen) before navigating to the next page.
-   Opt a link in with  data-transition.  If JS is unavailable
-   the links simply navigate normally.
+   PAGE TRANSITION
+   Leave: a black curtain rises from the bottom to cover the
+          page, then the browser navigates.
+   Enter: the curtain starts covering the new page and swipes
+          up off the top.
+   A timer always parks the curtain above the viewport after
+   the swipe so a stalled animation cannot leave the page black.
+   Opt a link in with data-transition.
    ========================================================= */
 (function () {
   'use strict';
@@ -13,31 +15,56 @@
 
   const EASE = 'cubic-bezier(.76,0,.24,1)';
   const DUR = 700;
+  let leaving = false;
 
-  /* LEAVE — rise up from the bottom to cover, then navigate */
-  function leave(href) {
+  function park() {
     ov.style.animation = 'none';
     ov.style.transition = 'none';
-    ov.style.transform = 'translateY(100%)';   // park just below the screen
-    void ov.offsetWidth;                        // reflow so the parked position sticks
-    ov.style.transition = 'transform ' + DUR + 'ms ' + EASE;
-    ov.style.transform = 'translateY(0)';       // slide up into full cover
-
-    let done = false;
-    const go = () => { if (!done) { done = true; window.location.href = href; } };
-    ov.addEventListener('transitionend', go, { once: true });
-    setTimeout(go, DUR + 120);                  // fallback if transitionend is missed
+    ov.style.transform = 'translateY(-100%)';
   }
 
-  /* Replay the reveal when the page is restored from bfcache (browser back) */
-  window.addEventListener('pageshow', (e) => {
-    if (!e.persisted) return;
+  function reveal() {
+    if (leaving) return;
     ov.style.animation = 'none';
+    ov.style.transition = 'none';
+    ov.style.transform = 'translateY(0)';
     void ov.offsetWidth;
-    ov.style.animation = '';
+    ov.style.transition = 'transform ' + DUR + 'ms ' + EASE;
+    ov.style.transform = 'translateY(-100%)';
+    setTimeout(function () {
+      if (!leaving) park();
+    }, DUR + 80);
+  }
+
+  function leave(href) {
+    leaving = true;
+    ov.style.animation = 'none';
+    ov.style.transition = 'none';
+    ov.style.transform = 'translateY(100%)';
+    void ov.offsetWidth;
+    ov.style.transition = 'transform ' + DUR + 'ms ' + EASE;
+    ov.style.transform = 'translateY(0)';
+
+    let done = false;
+    function go(e) {
+      if (e && e.propertyName && e.propertyName !== 'transform') return;
+      if (done) return;
+      done = true;
+      window.location.href = href;
+    }
+    ov.addEventListener('transitionend', go);
+    setTimeout(go, DUR + 80);
+  }
+
+  reveal();
+
+  window.addEventListener('pageshow', function (e) {
+    if (!e.persisted) return;
+    leaving = false;
+    reveal();
   });
 
-  document.addEventListener('click', (e) => {
+  document.addEventListener('click', function (e) {
     const a = e.target.closest('a[data-transition]');
     if (!a) return;
     const href = a.getAttribute('href');

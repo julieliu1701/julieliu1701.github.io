@@ -14,6 +14,14 @@
 <body>
   <!-- black curtain for the swipe-up page transition -->
   <div class="page-transition" aria-hidden="true"></div>
+  <script>
+  (function () {
+    var ov = document.querySelector('.page-transition');
+    if (!ov) return;
+    ov.style.animation = 'none';
+    ov.style.transform = 'translateY(0)';
+  })();
+  </script>
 
   <main class="wrap">
     <a class="back-btn" href="index.html" data-transition>Back</a>
