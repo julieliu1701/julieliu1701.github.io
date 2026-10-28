@@ -1,0 +1,35 @@
+/* Soft GSAP scroll — hide targets until scroll.js animates them in.
+   Only active when html.gsap-soft is set by scroll.js. */
+html.gsap-soft .site-header,
+html.gsap-soft .hero-title,
+html.gsap-soft .hero-foot > *,
+html.gsap-soft .work-grid .tile,
+html.gsap-soft .back-btn,
+html.gsap-soft .about-top,
+html.gsap-soft .xp-section-label,
+html.gsap-soft .xp-row,
+html.gsap-soft .phero,
+html.gsap-soft .meta,
+html.gsap-soft section.row,
+html.gsap-soft .work-row .work-media,
+html.gsap-soft .work-carousel{
+  opacity:0;
+}
+
+@media (prefers-reduced-motion: reduce){
+  html.gsap-soft .site-header,
+  html.gsap-soft .hero-title,
+  html.gsap-soft .hero-foot > *,
+  html.gsap-soft .work-grid .tile,
+  html.gsap-soft .back-btn,
+  html.gsap-soft .about-top,
+  html.gsap-soft .xp-section-label,
+  html.gsap-soft .xp-row,
+  html.gsap-soft .phero,
+  html.gsap-soft .meta,
+  html.gsap-soft section.row,
+  html.gsap-soft .work-row .work-media,
+  html.gsap-soft .work-carousel{
+    opacity:1;
+  }
+}
